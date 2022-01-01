@@ -1,0 +1,12 @@
+[Unit]
+Description=Ngrok SSH service
+After=network.target
+
+[Service]
+User=user
+Group=user
+WorkingDirectory=/home/user/src/tg-remote-ssh/tools/ngrok-ssh
+ExecStart=/home/user/src/tg-remote-ssh/tools/ngrok-ssh/start-ngrok
+
+[Install]
+WantedBy=multi-user.target

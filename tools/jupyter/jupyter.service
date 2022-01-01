@@ -1,0 +1,14 @@
+[Unit]
+Description=Jupyter notebook server
+After=network.target
+
+[Service]
+User=user
+Group=user
+WorkingDirectory=/home/user/src/tg-remote-ssh/tools/jupyter
+ExecStart=/home/user/src/tg-remote-ssh/tools/jupyter/start-jn
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ngrok tcp --region eu --log "stdout" --log-format "term" 22 > ./log.txt

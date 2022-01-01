@@ -1,0 +1,6 @@
+#!/bin/bash
+
+JN_OUT="$(cat ./jupyter.log | grep -A 1 running | sed -n 2p)"
+JN_TOKEN="$(echo $JN_OUT | sed 's/token\=/\n/g' | sed -n 2p)"
+
+echo $JN_TOKEN

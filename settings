@@ -1,0 +1,18 @@
+{
+	"enable_ssh": true,
+	"enable_server": true,
+	"enable_webtoken": true,
+	"enable_logging": true,
+	"notify_on_login": true,
+	"spam_threshold": 3,
+	"spam_interval": 600,
+	"spam_cooldown": 3600,
+	"ssh_script_path": "./tools/lo-ssh/lo-grep",
+	"web_script_path": "./tools/ngrok-ssh/ngrok-grep",
+	"webtoken_script_path": "./tools/jupyter/jn-grep",
+	"admins": [].
+	"allowed_ssh_ids": [],
+	"allowed_web_ids": [],
+	"allowed_webtoken_ids": [],
+	"glue_webtoken": true
+}
