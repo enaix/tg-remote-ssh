@@ -67,12 +67,12 @@ class CBot():
                 t.start()
                 return True
 
-    def check_and_log(self, user):
+    def check_and_log(self, user, notify=True):
         self.users_count += 1
         if not self.check_spam(context):
             with open(os.path.join(working_dir, "users_log"), 'a') as f:
                 f.write(time.strftime("%a %d %b %H:%M:%S", time.localtime()) + ' ' + str(user) + '\n')
-            if self.bot_env["notify_on_login"]:
+            if notify and self.bot_env["notify_on_login"]:
                 for u in self.bot_env["admins"]:
                     context.bot.send_message(chat_id=u, text="New login attempt: user "\
                             + str(user["id"]) + " (" + str(user["first_name"]) + " " + str(user["last_name"]) + ")")
@@ -105,8 +105,7 @@ class CBot():
             update.message.reply_markdown_v2(str("`") + str(ssh_out.decode()).strip() + str("`"))
         else:
             print("Access denied:", user)
-            if self.check_and_log(update.effective_user):
-                update.message.reply_markdown_v2(self.user_greet)
+            self.check_and_log(update.effective_user, notify=False)
 
     def address(self, update: Update, _: CallbackContext) -> None:
         if not self.bot_set["enable_server"]:
@@ -118,8 +117,7 @@ class CBot():
             update.message.reply_markdown_v2("Webserver address: " + "https://" + self.web_addr)
         else:
             print("Access denied:", user)
-            if self.check_and_log(update.effective_user):
-                update.message.reply_markdown_v2(self.user_greet)
+            self.check_and_log(update.effective_user, notify=False)
 
     def get_web_token(self, update: Update, _: CallbackContext) -> None:
         if not self.bot_set["enable_webtoken"]:
@@ -134,8 +132,7 @@ class CBot():
                 update.message.reply_markdown_v2("Webserver token: " + "https://" + str(token.decode()).strip())
         else:
             print("Access denied:", user)
-            if self.check_and_log(update.effective_user):
-                update.message.reply_markdown_v2(self.user_greet)
+            self.check_and_log(update.effective_user, notify=False)
 
 
 def main():
