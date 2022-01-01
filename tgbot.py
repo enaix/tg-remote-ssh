@@ -9,15 +9,14 @@ import threading
 import json
 import time
 
-working_dir = os.getcwd()
-
 class CBot():
     def __init__(self):
+        self.working_dir = os.getcwd()
         self.load_config()
         self.users_count = 0
         self.init_timer()
         self.web_addr = None
-        self.user_greet = fr'Hello, {user.mention_markdown_v2()}\! Your account has been logged on the server\. Please login and whitelist your user ID\.'
+        self.user_greet = 'Hello, {user.mention_markdown_v2()}\! Your account has been logged on the server\. Please login and whitelist your user ID\.'
     
         self.updater = Updater(self.bot_env["token"])
         self.dispatcher = self.updater.dispatcher
@@ -39,8 +38,8 @@ class CBot():
             self.bot_set = json.load(f)
 
     def load_config(self):
-        self.load_env(os.path.join(working_dir, "env"))
-        self.load_settings(os.path.join(working_dir, "settings"))
+        self.load_env(os.path.join(self.working_dir, "env"))
+        self.load_settings(os.path.join(self.working_dir, "settings"))
 
     def upd_users(self):
         self.users_count = 0
@@ -70,7 +69,7 @@ class CBot():
     def check_and_log(self, user, notify=True):
         self.users_count += 1
         if not self.check_spam(context):
-            with open(os.path.join(working_dir, "users_log"), 'a') as f:
+            with open(os.path.join(self.working_dir, "users_log"), 'a') as f:
                 f.write(time.strftime("%a %d %b %H:%M:%S", time.localtime()) + ' ' + str(user) + '\n')
             if notify and self.bot_env["notify_on_login"]:
                 for u in self.bot_env["admins"]:
@@ -87,11 +86,11 @@ class CBot():
             )
         else:
             if self.check_and_log(update.effective_user):
-                update.message.reply_markdown_v2(self.user_greet)
+                update.message.reply_markdown_v2(self.user_greet.format(user=user))
 
-    def run_cmd(self, cmd, **kwargs):
+    def run_cmd(self, cmd, *args):
         try:
-            out = subprocess.check_output([cmd, **kwargs], cwd=os.path.dirname(cmd))
+            out = subprocess.check_output([cmd, *args], cwd=os.path.dirname(cmd))
         except subprocess.CalledProcessError as err:
             return err
         return out

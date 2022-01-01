@@ -10,7 +10,7 @@
 	"ssh_script_path": "./tools/lo-ssh/lo-grep",
 	"web_script_path": "./tools/ngrok-ssh/ngrok-grep",
 	"webtoken_script_path": "./tools/jupyter/jn-grep",
-	"admins": [].
+	"admins": [],
 	"allowed_ssh_ids": [],
 	"allowed_web_ids": [],
 	"allowed_webtoken_ids": [],
