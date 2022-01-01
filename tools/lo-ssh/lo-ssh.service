@@ -3,10 +3,10 @@ Description=localhost.run ssh connection
 After=network.target
 
 [Service]
-User=user
-Group=user
-WorkingDirectory=/home/user/src/tg-remote-ssh/tools/lo-ssh
-ExecStart=/home/user/src/tg-remote-ssh/tools/lo-ssh/start-lo
+User=cur_user
+Group=cur_group
+WorkingDirectory=working_dir/tools/lo-ssh
+ExecStart=working_dir/tools/lo-ssh/start-lo
 Restart=always
 RestartSec=3
 

@@ -3,10 +3,10 @@ Description=Jupyter notebook server
 After=network.target
 
 [Service]
-User=user
-Group=user
-WorkingDirectory=/home/user/src/tg-remote-ssh/tools/jupyter
-ExecStart=/home/user/src/tg-remote-ssh/tools/jupyter/start-jn
+User=cur_user
+Group=cur_group
+WorkingDirectory=working_dir/tools/jupyter
+ExecStart=working_dir/tools/jupyter/start-jn
 Restart=always
 RestartSec=10
 

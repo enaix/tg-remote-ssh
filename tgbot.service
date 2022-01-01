@@ -3,10 +3,10 @@ Description=Telegram remote access bot
 After=network.target
 
 [Service]
-User=user
-Group=user
-WorkingDir=/home/user/src/tg-remote-ssh
-ExecStart=/home/user/src/tg-remote-ssh/tgbot.py
+User=cur_user
+Group=cur_group
+WorkingDir=working_dir
+ExecStart=working_dir/tgbot.py
 Restart=always
 RestartSec=10
 
