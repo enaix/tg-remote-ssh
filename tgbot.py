@@ -72,7 +72,7 @@ class CBot():
                 f.write(time.strftime("%a %d %b %H:%M:%S", time.localtime()) + ' ' + str(user) + '\n')
             if notify and self.bot_set["notify_on_login"]:
                 for u in self.bot_set["admins"]:
-                    context.bot.send_message(chat_id=u, text="New login attempt: user "\
+                    ctx.bot.send_message(chat_id=u, text="New login attempt: user "\
                             + str(user["id"]) + " (" + str(user["first_name"]) + " " + str(user["last_name"]) + ")")
             return True
         return False
@@ -94,7 +94,7 @@ class CBot():
             return err
         return out
 
-    def ssh(self, update: Update, _: CallbackContext) -> None:
+    def ssh(self, update: Update, context: CallbackContext) -> None:
         if not self.bot_set["enable_ssh"]:
             return
         user = update.effective_user
@@ -109,7 +109,7 @@ class CBot():
             print("Access denied:", user)
             self.check_and_log(update.effective_user, context, notify=False)
 
-    def address(self, update: Update, _: CallbackContext) -> None:
+    def address(self, update: Update, context: CallbackContext) -> None:
         if not self.bot_set["enable_server"]:
             return
         user = update.effective_user
@@ -119,9 +119,9 @@ class CBot():
             update.message.reply_markdown_v2(esc("Webserver address: " + "https://" + self.web_addr))
         else:
             print("Access denied:", user)
-            self.check_and_log(update.effective_user, ctx, notify=False)
+            self.check_and_log(update.effective_user, context, notify=False)
 
-    def get_web_token(self, update: Update, _: CallbackContext) -> None:
+    def get_web_token(self, update: Update, context: CallbackContext) -> None:
         if not self.bot_set["enable_webtoken"]:
             return
         user = update.effective_user
