@@ -41,4 +41,6 @@ Edit the `tools/lo-ssh/start-lo` file and change the 8888 port to your desired l
 
 ### Ngrok
 
+*Never start ngrok without configuring sshd, bad configuration may lead to a hack*
+Disable password authentication in /etc/ssh/sshd.config 
 Make sure that `ngrok` binary is in `$PATH` and edit the command in `tools/ngrok-ssh/start-ngrok`
