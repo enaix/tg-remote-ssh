@@ -4,4 +4,8 @@ NGROK_OUTPUT="$(cat ./log.txt | grep 'started tunnel' | tail -n 1 | awk '{print 
 NGROK_URL="$(echo $NGROK_OUTPUT | awk -F: '{print $1}')"
 NGROK_PORT="$(echo $NGROK_OUTPUT | awk -F: '{print $2}')"
 
-echo "ssh pi@$NGROK_URL -p $NGROK_PORT -D 8080"
+if [[ -z $NGROK_URL ]]; then
+	echo ""
+else
+	echo "ssh $(id -un)@$ngrok_url -p $ngrok_port -d 8080"
+fi

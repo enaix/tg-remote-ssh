@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
-from telegram import Update, ForceReply
+from telegram import Update, ForceReply, ParseMode
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+from telegram.utils.helpers import escape_markdown
 
 import os
 import subprocess
@@ -80,15 +81,15 @@ class CBot():
         user = update.effective_user
         if user.id in self.allow:
             update.message.reply_markdown_v2(
-                fr'Welcome back, {user.mention_markdown_v2()}\!',
-            )
+                esc(fr'Welcome back, {user.mention_markdown_v2()}\!'))
         else:
             if self.check_and_log(update.effective_user, context):
-                update.message.reply_markdown_v2(self.user_greet.format(user=user.mention_markdown_v2()))
+                update.message.reply_markdown_v2(esc(self.user_greet.format(user=user.mention_markdown_v2())))
 
     def run_cmd(self, cmd, *args):
         try:
-            out = subprocess.check_output([cmd, *args], cwd=os.path.dirname(cmd))
+            out = subprocess.check_output([os.path.abspath(cmd), *args],\
+                    cwd=os.path.abspath(os.path.dirname(cmd)))
         except subprocess.CalledProcessError as err:
             return err
         return out
@@ -99,7 +100,11 @@ class CBot():
         user = update.effective_user
         if user.id in self.bot_set["allowed_ssh_ids"]:
             ssh_out = self.run_cmd(self.bot_set["ssh_script_path"])
-            update.message.reply_markdown_v2(str("`") + str(ssh_out.decode()).strip() + str("`"))
+            cmd = str(ssh_out.decode()).strip()
+            if cmd == "":
+                update.message.reply_markdown_v2(esc("SSH service not running"))
+            else:
+                update.message.reply_markdown_v2(esc(str("`") +  + str("`")))
         else:
             print("Access denied:", user)
             self.check_and_log(update.effective_user, context, notify=False)
@@ -111,7 +116,7 @@ class CBot():
         if user.id in self.bot_set["allowed_web_ids"]:
             web_out = self.run_cmd(self.bot_set["web_script_path"])
             self.web_addr = str(web_out.decode()).strip()
-            update.message.reply_markdown_v2("Webserver address: " + "https://" + self.web_addr)
+            update.message.reply_markdown_v2(esc("Webserver address: " + "https://" + self.web_addr))
         else:
             print("Access denied:", user)
             self.check_and_log(update.effective_user, ctx, notify=False)
@@ -123,14 +128,17 @@ class CBot():
         if user.id in self.bot_set["allowed_webtoken_ids"]:
             token = self.run_cmd(self.bot_set["webtoken_script_path"])
             if self.bot_set["glue_webtoken"] and self.web_addr is not None:
-                update.message.reply_markdown_v2("Webserver address: " + "https://" + self.web_addr\
-                        + "/?token=" + str(token.decode()).strip())
+                update.message.reply_markdown_v2(esc("Webserver address: " + "https://" + self.web_addr\
+                        + "/?token=" + str(token.decode()).strip()))
             else:
-                update.message.reply_markdown_v2("Webserver token: " + "https://" + str(token.decode()).strip())
+                update.message.reply_markdown_v2(esc("Webserver token: " + "https://" + str(token.decode()).strip()))
         else:
             print("Access denied:", user)
             self.check_and_log(update.effective_user, context, notify=False)
 
+
+def esc(text):
+    return escape_markdown(text, version=2)
 
 def main():
     bot = CBot()

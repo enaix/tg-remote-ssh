@@ -1,6 +1,6 @@
 #!/bin/bash
 
 LO_PS="$(tac ./ssh.log | grep -m 1 tunneled)"
-LO_ADDR="($(echo LO_PS | awk {'print $1'}))"
+LO_ADDR="$(echo $LO_PS | awk {'print $1'})"
 
 echo $LO_ADDR
