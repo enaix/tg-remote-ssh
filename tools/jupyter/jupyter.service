@@ -7,6 +7,7 @@ User=cur_user
 Group=cur_group
 WorkingDirectory=working_dir/tools/jupyter
 ExecStart=working_dir/tools/jupyter/start-jn
+StandardOutput=file:working_dir/tools/jupyter/jupyter.log
 Restart=always
 RestartSec=10
 
