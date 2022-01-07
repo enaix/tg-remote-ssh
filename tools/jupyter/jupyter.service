@@ -8,6 +8,7 @@ Group=cur_group
 WorkingDirectory=working_dir/tools/jupyter
 ExecStart=working_dir/tools/jupyter/start-jn
 StandardOutput=file:working_dir/tools/jupyter/jupyter.log
+StandardError=file:working_dir/tools/jupyter/jupyter_error.log
 Restart=always
 RestartSec=10
 

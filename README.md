@@ -37,7 +37,7 @@ Some of the configuration options:
 
 ### Web server
 
-Edit the `tools/lo-ssh/start-lo` file and change the 8888 port to your desired local port
+Edit the `tools/lo-ssh/start-lo` file and change the 8888 port to your desired local port. Don't forget to execute the `start-lo` script manually in order to add localhost.run to known_hosts.
 
 ### Ngrok
 
