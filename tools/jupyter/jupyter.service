@@ -1,11 +1,13 @@
 [Unit]
 Description=Jupyter notebook server
+Requires=network.target
 After=network.target
 
 [Service]
 User=cur_user
 Group=cur_group
 WorkingDirectory=working_dir/tools/jupyter
+ExecStartPre=/bin/sh -c 'until ping -c1 api.telegram.org; do sleep 1; done;'
 ExecStart=working_dir/tools/jupyter/start-jn
 StandardOutput=file:working_dir/tools/jupyter/jupyter.log
 StandardError=file:working_dir/tools/jupyter/jupyter_error.log

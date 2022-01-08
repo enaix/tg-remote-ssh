@@ -1,11 +1,13 @@
 [Unit]
 Description=Telegram remote access bot
+Requires=network.target
 After=network.target
 
 [Service]
 User=cur_user
 Group=cur_group
 WorkingDirectory=working_dir
+ExecStartPre=/bin/sh -c 'until ping -c1 api.telegram.org; do sleep 1; done;'
 ExecStart=working_dir/tgbot.py
 Restart=always
 RestartSec=10

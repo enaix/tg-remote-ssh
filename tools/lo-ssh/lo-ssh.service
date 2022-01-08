@@ -1,11 +1,13 @@
 [Unit]
 Description=localhost.run ssh connection
+Requires=network.target
 After=network.target
 
 [Service]
 User=cur_user
 Group=cur_group
 WorkingDirectory=working_dir/tools/lo-ssh
+ExecStartPre=/bin/sh -c 'until ping -c1 api.telegram.org; do sleep 1; done;'
 ExecStart=working_dir/tools/lo-ssh/start-lo
 Restart=always
 RestartSec=3
