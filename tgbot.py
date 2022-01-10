@@ -153,6 +153,7 @@ class CBot():
                         update.message.document.file_id + dot_split[len(dot_split)-1])
             with open(out_path, 'w') as r:
                 context.bot.get_file(update.message.document).download(out=f)
+            update.message.reply_markdown_v2(esc("File saved as " + out_path))
         else:
             print("Access denied:", user)
             self.check_and_log(update.effective_user, context, notify=False)

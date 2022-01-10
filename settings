@@ -2,6 +2,7 @@
 	"enable_ssh": true,
 	"enable_server": true,
 	"enable_webtoken": true,
+	"receive_files": true,
 	"enable_logging": true,
 	"notify_on_login": true,
 	"spam_threshold": 3,
@@ -14,5 +15,7 @@
 	"allowed_ssh_ids": [],
 	"allowed_web_ids": [],
 	"allowed_webtoken_ids": [],
-	"glue_webtoken": true
+	"allowed_files_ids": [],
+	"glue_webtoken": true,
+	"files_save_folder": ""
 }
