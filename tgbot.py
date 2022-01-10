@@ -27,6 +27,7 @@ class CBot():
         self.dispatcher.add_handler(CommandHandler("ssh", self.ssh))
         self.dispatcher.add_handler(CommandHandler("web", self.address))
         self.dispatcher.add_handler(CommandHandler("webtoken", self.get_web_token))
+        self.dispatcher.add_handler(MessageHandler(Filters.document, self.fetch_files))
         
     def load_env(self, filename):
         with open(filename, 'r') as f:
@@ -136,6 +137,25 @@ class CBot():
             print("Access denied:", user)
             self.check_and_log(update.effective_user, context, notify=False)
 
+    def fetch_file(self, update: Update, context: CallbackContext) -> None:
+        if not self.bot_set["receive_files"]:
+            return
+        user = update.effective_user
+        if user.id in self.bot_set["allowed_files_ids"]:
+            filename = update.message.document.file_name
+            if filename is None:
+                filename = update.message.document.file_id + "." + update.message.document.mime_type
+            out = "".join(x for x in filename if x.isalnum() or x in "._-")
+            out_path = os.path.join(self.bot_set["file_save_folder"], out)
+            if os.path.exists(out_path):
+                dot_split = out.split(".")
+                out_path = os.path.join(self.bot_set["file_save_folder"], ".".join(dot_split[:-1]) + "_" +\
+                        update.message.document.file_id + dot_split[len(dot_split)-1])
+            with open(out_path, 'w') as r:
+                context.bot.get_file(update.message.document).download(out=f)
+        else:
+            print("Access denied:", user)
+            self.check_and_log(update.effective_user, context, notify=False)
 
 def esc(text):
     return escape_markdown(text, version=2)
