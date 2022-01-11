@@ -6,6 +6,7 @@
 * Ngrok ssh service
 * Webserver with encrypted tls (localhost.run)
 * Jupyter notebook support (token extraction)
+* File saving support
 
 ## Installation
 
@@ -44,6 +45,12 @@ Edit the `tools/lo-ssh/start-lo` file and change the 8888 port to your desired l
 *Never start ngrok without configuring sshd, bad configuration may lead to a hack!*
 Disable password authentication in /etc/ssh/sshd.config.
 Make sure that `ngrok` binary is in `$PATH` and edit the command in `tools/ngrok-ssh/start-ngrok`
+
+### Files
+
+Set `files_save_folder` option. Make sure that there are no important files there.
+
+You may forward/send a file to the bot and it will be downloaded to this folder. If the file exists, the new document is saved under `filename_fileid`.
 
 ### Final configuration
 
