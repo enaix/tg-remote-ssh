@@ -5,6 +5,8 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Callb
 from telegram.utils.helpers import escape_markdown
 
 import os
+import sys
+import signal
 import subprocess
 import threading
 import json
@@ -28,7 +30,13 @@ class CBot():
         self.dispatcher.add_handler(CommandHandler("web", self.address))
         self.dispatcher.add_handler(CommandHandler("webtoken", self.get_web_token))
         self.dispatcher.add_handler(MessageHandler(Filters.document, self.fetch_file))
-        
+
+    def handle_sigterm(self, *args):
+        print("Attempting graceful shutdown...")
+        self.updater.stop()
+        self.updater.is_idle = False
+        sys.exit(0)
+
     def load_env(self, filename):
         with open(filename, 'r') as f:
             self.bot_env = json.load(f)
@@ -164,7 +172,8 @@ def esc(text):
 def main():
     bot = CBot()
     bot.updater.start_polling()
-    bot.updater.idle()
+    signal.signal(signal.SIGTERM, bot.handle_sigterm)
+    #bot.updater.idle()
 
 if __name__ == '__main__':
     main()
