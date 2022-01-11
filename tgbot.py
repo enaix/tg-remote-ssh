@@ -19,7 +19,7 @@ class CBot():
         self.web_addr = None
         self.allow = set(self.bot_set["admins"]) & set(self.bot_set["allowed_ssh_ids"]) &\
                 set(self.bot_set["allowed_web_ids"]) & set(self.bot_set["allowed_webtoken_ids"])
-        self.user_greet = 'Hello, {user}\! Your account has been logged on the server\. Please login and whitelist your user ID\.'
+        self.user_greet = 'Hello, {user}! Your account has been logged on the server. Please login and whitelist your user ID.'
     
         self.updater = Updater(self.bot_env["token"])
         self.dispatcher = self.updater.dispatcher
@@ -27,7 +27,7 @@ class CBot():
         self.dispatcher.add_handler(CommandHandler("ssh", self.ssh))
         self.dispatcher.add_handler(CommandHandler("web", self.address))
         self.dispatcher.add_handler(CommandHandler("webtoken", self.get_web_token))
-        self.dispatcher.add_handler(MessageHandler(Filters.document, self.fetch_files))
+        self.dispatcher.add_handler(MessageHandler(Filters.document, self.fetch_file))
         
     def load_env(self, filename):
         with open(filename, 'r') as f:
@@ -82,7 +82,7 @@ class CBot():
         user = update.effective_user
         if user.id in self.allow:
             update.message.reply_markdown_v2(
-                esc(fr'Welcome back, {user.mention_markdown_v2()}\!'))
+                esc(fr'Welcome back, {user["first_name"]}!'))
         else:
             if self.check_and_log(update.effective_user, context):
                 update.message.reply_markdown_v2(esc(self.user_greet.format(user=user.mention_markdown_v2())))
