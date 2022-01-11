@@ -146,12 +146,12 @@ class CBot():
             if filename is None:
                 filename = update.message.document.file_id + "." + update.message.document.mime_type
             out = "".join(x for x in filename if x.isalnum() or x in "._-")
-            out_path = os.path.join(self.bot_set["file_save_folder"], out)
+            out_path = os.path.join(self.bot_set["files_save_folder"], out)
             if os.path.exists(out_path):
                 dot_split = out.split(".")
-                out_path = os.path.join(self.bot_set["file_save_folder"], ".".join(dot_split[:-1]) + "_" +\
-                        update.message.document.file_id + dot_split[len(dot_split)-1])
-            with open(out_path, 'w') as r:
+                out_path = os.path.join(self.bot_set["files_save_folder"], ".".join(dot_split[:-1]) + "_" +\
+                        update.message.document.file_id + "." + dot_split[len(dot_split)-1])
+            with open(out_path, 'wb') as f:
                 context.bot.get_file(update.message.document).download(out=f)
             update.message.reply_markdown_v2(esc("File saved as " + out_path))
         else:
