@@ -12,6 +12,7 @@ import threading
 import json
 import time
 import mimetypes
+import re
 
 class CBot():
     def __init__(self):
@@ -31,7 +32,12 @@ class CBot():
         self.dispatcher.add_handler(CommandHandler("web", self.address))
         self.dispatcher.add_handler(CommandHandler("webtoken", self.get_web_token))
         self.dispatcher.add_handler(CommandHandler("files", self.list_files))
+        self.dispatcher.add_handler(MessageHandler(Filters.text, self.search_regex))
         self.dispatcher.add_handler(MessageHandler(Filters.document, self.fetch_file))
+
+    def search_regex(self, update: Update, context: CallbackContext) -> None:
+        if re.search("^/getfile_.*?", update.message.text, re.IGNORECASE | re.DOTALL):
+            self.get_file(update, context, update.message.text.split("_")[1])
 
     def handle_sigterm(self, *args):
         print("Attempting graceful shutdown...")
@@ -176,7 +182,7 @@ class CBot():
         types = {"image": "🖼️", "audio": "💽", "text": "📝", "video": "📹"}
         if mime not in types:
             return "📄"
-        return types["mime"]
+        return types[mime]
 
     def list_files(self, update: Update, context: CallbackContext) -> None:
         if not self.bot_set["enable_fileexplorer"]:
@@ -186,12 +192,43 @@ class CBot():
             ans = "📂" + self.bot_set["fileexplorer_dir"]
             files = os.listdir(self.bot_set["fileexplorer_dir"])
             for i in range(len(files)):
-                ans += "\n " + self.get_file_emoji(files[i]) + str(files[i])\
-                        + " [" + "/getfile_" + str(i) + "]"
+                # TODO add files list splitting
+                if os.path.isdir(os.path.join(self.bot_set["fileexplorer_dir"],\
+                        files[i])):
+                    emoji = "📁"
+                else:
+                    emoji = self.get_file_emoji(files[i])
+                ans += "\n " + emoji + str(files[i])\
+                        + " " + "/getfile_" + str(i)
             update.message.reply_markdown_v2(esc(ans))
         else:
             print("Access denied:", user)
             self.check_and_log(update.effective_user, context, notify=False)
+
+    def get_file(self, update: Update, context: CallbackContext, file_arg) -> None:
+        if not self.bot_set["enable_fileexplorer"]:
+            return
+        user = update.effective_user
+        if user.id in self.bot_set["allowed_fileexplorer_ids"]:
+            #if len(context.args) == 0:
+            #    return
+            try:
+                file_id = int(file_arg)
+                files = os.listdir(self.bot_set["fileexplorer_dir"])
+                filename = files[file_id]
+            except BaseException:
+                return
+            fpath = os.path.join(self.bot_set["fileexplorer_dir"], filename)
+            if os.path.isdir(fpath):
+                update.message.reply_markdown_v2(esc("This file is a directory!"))
+                return
+            with open(fpath, 'rb') as f:
+                context.bot.send_document(chat_id=update.message.chat_id,\
+                        document=f, filename=filename)
+        else:
+            print("Access denied:", user)
+            self.check_and_log(update.effective_user, context, notify=False)
+            
 
 def esc(text):
     return escape_markdown(text, version=2)
