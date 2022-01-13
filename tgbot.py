@@ -11,6 +11,7 @@ import subprocess
 import threading
 import json
 import time
+import mimetypes
 
 class CBot():
     def __init__(self):
@@ -29,6 +30,7 @@ class CBot():
         self.dispatcher.add_handler(CommandHandler("ssh", self.ssh))
         self.dispatcher.add_handler(CommandHandler("web", self.address))
         self.dispatcher.add_handler(CommandHandler("webtoken", self.get_web_token))
+        self.dispatcher.add_handler(CommandHandler("files", self.list_files))
         self.dispatcher.add_handler(MessageHandler(Filters.document, self.fetch_file))
 
     def handle_sigterm(self, *args):
@@ -162,6 +164,31 @@ class CBot():
             with open(out_path, 'wb') as f:
                 context.bot.get_file(update.message.document).download(out=f)
             update.message.reply_markdown_v2(esc("File saved as " + out_path))
+        else:
+            print("Access denied:", user)
+            self.check_and_log(update.effective_user, context, notify=False)
+
+    def get_file_emoji(self, file):
+        mime_type = mimetypes.guess_type(file)[0]
+        if mime_type is None:
+            return "📄"
+        mime = mime_type.split("/")[0]
+        types = {"image": "🖼️", "audio": "💽", "text": "📝", "video": "📹"}
+        if mime not in types:
+            return "📄"
+        return types["mime"]
+
+    def list_files(self, update: Update, context: CallbackContext) -> None:
+        if not self.bot_set["enable_fileexplorer"]:
+            return
+        user = update.effective_user
+        if user.id in self.bot_set["allowed_fileexplorer_ids"]:
+            ans = "📂" + self.bot_set["fileexplorer_dir"]
+            files = os.listdir(self.bot_set["fileexplorer_dir"])
+            for i in range(len(files)):
+                ans += "\n " + self.get_file_emoji(files[i]) + str(files[i])\
+                        + " [" + "/getfile_" + str(i) + "]"
+            update.message.reply_markdown_v2(esc(ans))
         else:
             print("Access denied:", user)
             self.check_and_log(update.effective_user, context, notify=False)
