@@ -3,6 +3,7 @@
 	"enable_server": true,
 	"enable_webtoken": true,
 	"receive_files": true,
+	"enable_fileexplorer": true,
 	"enable_logging": true,
 	"notify_on_login": true,
 	"spam_threshold": 3,
@@ -16,6 +17,8 @@
 	"allowed_web_ids": [],
 	"allowed_webtoken_ids": [],
 	"allowed_files_ids": [],
+	"allowed_fileexplorer_ids": [],
 	"glue_webtoken": true,
-	"files_save_folder": ""
+	"files_save_folder": "",
+	"fileexplorer_dir": ""
 }
