@@ -131,8 +131,11 @@ class CBot():
             return
         user = update.effective_user
         if user.id in self.bot_set["allowed_web_ids"]:
-            web_out = self.run_cmd(self.bot_set["web_script_path"])
-            self.web_addr = str(web_out.decode()).strip()
+            if self.bot_set["web_fetch_address"]:
+                web_out = self.run_cmd(self.bot_set["web_script_path"])
+                self.web_addr = str(web_out.decode()).strip()
+            else:
+                self.web_addr = self.bot_set["web_custom_address"]
             update.message.reply_markdown_v2(esc("Webserver address: " + "https://" + self.web_addr))
         else:
             print("Access denied:", user)

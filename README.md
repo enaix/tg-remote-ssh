@@ -44,6 +44,12 @@ Edit the `tools/lo-ssh/start-lo` file and change the 8888 port to your desired l
 
 *If you're using free-tier localhost.run tunnel, note that it creates a new tunnel every 10-15 minutes. For some reason, Jupyter doesn't save any progress after the disconnection!*
 
+#### Paid tier or custom server
+
+In the `tools/lo-ssh/start-lo` uncomment the line with `ssh-add` command and set your private ssh key path.
+
+In the last line, change `nokey@localhost.run` to the desired user with server. The first port (80) stands for the remote port and the second one (8888) for the local port. In settings, set `web_fetch_address` to `false` and specify the same server in `web_custom_address`.
+
 ### Ngrok
 
 *Never start ngrok without configuring sshd, bad configuration may lead to a hack!*

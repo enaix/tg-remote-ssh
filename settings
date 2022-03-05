@@ -9,6 +9,8 @@
 	"spam_threshold": 3,
 	"spam_interval": 600,
 	"spam_cooldown": 3600,
+	"web_fetch_address": true,
+	"web_custom_address": "user.lhrtunnel.link"
 	"ssh_script_path": "./tools/ngrok-ssh/ngrok-grep",
 	"web_script_path": "./tools/lo-ssh/lo-grep",
 	"webtoken_script_path": "./tools/jupyter/jn-grep",

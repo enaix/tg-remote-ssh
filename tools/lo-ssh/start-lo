@@ -1,3 +1,9 @@
 #!/bin/bash
 
+# Enable ssh-agent
+ps -p $SSH_AGENT_PID 2&>1 > /dev/null || eval "$(ssh-agent)"
+
+# Add ssh key (uncomment if needed)
+# ssh-add ~/.ssh/id_rsa
+
 ssh -R 80:localhost:8888 nokey@localhost.run > ./ssh.log
