@@ -4,7 +4,7 @@
 
 ## Features:
 * Ngrok ssh service
-* Webserver with encrypted tls (localhost.run)
+* Webserver with encrypted tls (localhost.run or custom server)
 * Jupyter notebook support (token extraction)
 * File download/upload support
 
@@ -48,7 +48,9 @@ Edit the `tools/lo-ssh/start-lo` file and change the 8888 port to your desired l
 
 In the `tools/lo-ssh/start-lo` uncomment the line with `ssh-add` command and set your private ssh key path.
 
-In the last line, change `nokey@localhost.run` to the desired user with server. The first port (80) stands for the remote port and the second one (8888) for the local port. In settings, set `web_fetch_address` to `false` and specify the same server in `web_custom_address`.
+In the last line, change `nokey@localhost.run` to the desired user with server. The first port (`80`) stands for the remote port and the second one (`8888`) for the local port. In settings, set `web_fetch_address` to `false` and specify the same server in `web_custom_address`.
+
+If you're using your own server, please check [these instructions.](https://github.com/enaix/tg-remote-ssh/blob/master/extra/SERVER.md)
 
 ### Ngrok
 
