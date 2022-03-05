@@ -38,7 +38,11 @@ Some of the configuration options:
 
 ### Web server
 
+#### localhost.run
+
 Edit the `tools/lo-ssh/start-lo` file and change the 8888 port to your desired local port. Don't forget to execute the `start-lo` script manually in order to add localhost.run to known_hosts.
+
+*If you're using free-tier localhost.run tunnel, note that it creates a new tunnel every 10-15 minutes. For some reason, Jupyter doesn't save any progress after the disconnection!*
 
 ### Ngrok
 
