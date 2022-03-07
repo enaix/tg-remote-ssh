@@ -22,7 +22,7 @@ To start/stop/restart services, run `sudo systemctl <action> <service>`
 
 ## Not Linux
 
-Unfortunately, other OS are not supported
+Unfortunately, other operating systems are not supported, but you may manually add these 4 services to autostart.
 
 ## Configuration
 
@@ -35,6 +35,8 @@ Some of the configuration options:
 * `notify_on_login`: Message admins when someone tries to login
 * `spam_threshold`: Spam users threshold
 * `glue_webtoken`: Post the whole link with the webtoken (Jupyter only)
+
+Obtain your bot token from the @botfather and put it in the `env` file.
 
 ### Web server
 
