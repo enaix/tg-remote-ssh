@@ -28,6 +28,24 @@ server {
 	ssl_certificate_key /etc/letsencrypt/live/my-server.com/privkey.pem;
 	
 	location / {
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Proto $scheme;
+		proxy_read_timeout 90;
+		proxy_pass http://127.0.0.1:1234;
+	}
+
+	location ~* /(api/kernels/[^/]+/(channels|iopub|shell|stdin)|terminals/websocket)/? {
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Proto $scheme;
+
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade "websocket";
+		proxy_set_header Connection "Upgrade";
+		proxy_read_timeout 86400;
 		proxy_pass http://127.0.0.1:1234;
 	}
 }
@@ -71,6 +89,24 @@ server {
 	ssl_certificate_key /etc/letsencrypt/live/my-server.com/privkey.pem;
 	
 	location / {
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Proto $scheme;
+		proxy_read_timeout 90;
+		proxy_pass http://127.0.0.1:1234;
+	}
+
+	location ~* /(api/kernels/[^/]+/(channels|iopub|shell|stdin)|terminals/websocket)/? {
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header X-Forwarded-Proto $scheme;
+
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade "websocket";
+		proxy_set_header Connection "Upgrade";
+		proxy_read_timeout 86400;
 		proxy_pass http://127.0.0.1:1234;
 	}
 }
