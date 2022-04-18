@@ -4,6 +4,10 @@ If you wish to use your own server instead of localhost.run, you may follow thes
 
 We assume that you have server's ssh keys and the certbot is set up properly.
 
+## Notes
+
+Ssh remote port may fail to open due to an existing or ssh connection. I couldn't find the reason why the port is still being blocked, even if the old connection is closed.
+
 ## Remote port
 
 Please change the default port (`80`) in the ssh bot script to a different one (`1000-65535`), it must be different from the one in `listen` variable. We will use port `1234` in here.
