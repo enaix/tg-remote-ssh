@@ -8,6 +8,8 @@ We assume that you have server's ssh keys and the certbot is set up properly.
 
 Ssh remote port may fail to open due to an existing or ssh connection. I couldn't find the reason why the port is still being blocked, even if the old connection is closed.
 
+See issue [#2](https://github.com/enaix/tg-remote-ssh/issues/2#issue-1206858295) for more details.
+
 ## Remote port
 
 Please change the default port (`80`) in the ssh bot script to a different one (`1000-65535`), it must be different from the one in `listen` variable. We will use port `1234` in here.
